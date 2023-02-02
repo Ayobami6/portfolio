@@ -1,12 +1,21 @@
-from lib2to3.pgen2.token import NEWLINE
-from os import name
+import os
 from flask import Flask, render_template, url_for, request, redirect
-from markupsafe import escape
+from flask_mail import Mail, Message
 import csv
-
 
 app = Flask(__name__)
 print(__name__)
+
+# Configuring Flask mail
+app.config["MAIL_DEFAULT_SENDER"] = os.environ["MAIL_SENDER"]
+app.config['MAIL_SERVER'] = 'smtp.gmail.com'
+app.config['MAIL_PORT'] = 465
+app.config["MAIL_USERNAME"] = os.environ["MAIL_USERNAME"]
+app.config["MAIL_PASSWORD"] = os.environ["MAIL_PASSWORD"]
+app.config['MAIL_USE_TLS'] = False
+app.config['MAIL_USE_SSL'] = True
+
+mail = Mail(app)
 
 
 @app.route('/')
@@ -21,17 +30,19 @@ def web_page(page_name):
     return render_template(page_name)
 
 
-def write_to_file(data):
-    with open('database.txt', mode='a') as database:
-        email = data['email']
-        subject = data['subject']
-        message = data['message']
-        file = database.write(f"\n{email},{subject},{message}")
+def send_mail(data):
+    email = data["email"]
+    name = data["name"]
+    msg = Message(subject="Thanks For Reaching Out",
+                  recipients=[email],
+                  body=f"Hi, {name} \nThanks for reaching out, will get back shortly")
+    mail.send(msg)
 
 
 def write_to_csv(data):
     with open('database.csv', mode='a', newline='') as database2:
         email = data['email']
+        name = data['name']
         subject = data['subject']
         message = data['message']
         fieldnames = ['email', 'subject', 'message']
@@ -46,6 +57,7 @@ def submit_form():
         try:
             data = request.form.to_dict()
             write_to_csv(data)
+            send_mail(data)
             return redirect('thankyou.html')
         except NameError:
             return 'Did not save to database'
