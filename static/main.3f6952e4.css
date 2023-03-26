@@ -1,4 +1,5 @@
-@import url(https://fonts.googleapis.com/css?family=Roboto:900|Roboto+Mono:300,400,700);@import url(https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css);/*!
+@import url(https://fonts.googleapis.com/css?family=Roboto:900|Roboto+Mono:300,400,700);@import url(https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css);@import url('https://fonts.googleapis.com/css2?family=Alkatra:wght@400;500;600;700&display=swap');
+/*!
  * Bootstrap v3.3.7 (http://getbootstrap.com)
  * Copyright 2011-2016 Twitter, Inc.
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
@@ -29,10 +30,15 @@
     background-color: black;
 }
 
-.about-text{
-    font-family: Georgia;
-    font-size: 15px;
-    text-align: center;
+#about-text{
+    font-family: 'Alkatra', cursive;
+    font-size: 12px;
+    text-align: left;
+}
+
+#summary{
+  font-family: 'Alkatra', cursive;
+  font-size: 12px;
 }
 
 .section-container p{
@@ -118,3 +124,4 @@
     width: 500px;
     height: 300px;
 }
+
